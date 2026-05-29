@@ -303,6 +303,7 @@ function initWaveMusicPlayer() {
   const setPlayingUI = () => {
     const active = !audio.paused;
     player.classList.toggle("playing", active);
+    document.body.classList.toggle("music-active", active);
     playBtn.textContent = active ? "❚❚" : "▶";
   };
 
@@ -419,6 +420,32 @@ function initWaveMusicPlayer() {
   });
 }
 
+function updateBrandClock() {
+  const timeEl = $("brandTime");
+  const dateEl = $("brandDate");
+  if (!timeEl || !dateEl) return;
+  const now = new Date();
+  timeEl.textContent = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false
+  });
+  const dateText = now.toLocaleDateString([], {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "2-digit"
+  });
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "Local";
+  dateEl.textContent = `${dateText} • ${timeZone}`;
+}
+
+function initBrandClock() {
+  updateBrandClock();
+  setInterval(updateBrandClock, 1000);
+}
+
 function bindEvents() {
   document.querySelectorAll("[data-section]").forEach(el => el.addEventListener("click", (e) => {
     e.preventDefault();
@@ -514,6 +541,7 @@ function bindEvents() {
 
 async function init() {
   bindEvents();
+  initBrandClock();
   initWaveMusicPlayer();
   $("langBtn").textContent = state.lang;
   await loadMarket();
