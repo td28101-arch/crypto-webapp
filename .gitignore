@@ -1,1 +1,3 @@
-# Images folder is needed for the background image, do not ignore it
+.env
+node_modules/
+.DS_Store

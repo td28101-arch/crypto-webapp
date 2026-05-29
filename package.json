@@ -1,0 +1,10 @@
+{
+  "name": "crypto-wave-dashboard",
+  "version": "2.0.0",
+  "description": "Interactive crypto market intelligence dashboard with silent API fallback.",
+  "scripts": {
+    "start": "netlify dev",
+    "build": "echo 'Static site ready'"
+  },
+  "dependencies": {}
+}

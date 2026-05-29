@@ -1,62 +1,349 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Cryptocurrency Web-App</title>
-        <link rel="stylesheet" href="style.css">
-        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
-        <link rel="stylesheet" href="https://font-awesome">
-        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crypto Wave Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://api.coingecko.com" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#market" data-section="market" aria-label="Home">
+        <span class="brand-logo">◖</span>
+        <span>Crypto Wave</span>
+      </a>
 
-    </head>
+      <nav class="nav-menu" aria-label="Main navigation">
+        <a href="#market" data-section="market" class="active">Market</a>
+        <a href="#features" data-section="features">Features</a>
+        <a href="#whitepapers" data-section="whitepapers">White Papers</a>
+        <a href="#about" data-section="about">About</a>
+      </nav>
 
-    <body>
-        <div class="container">
-            <nav>
-                <i class="fas fa-chart-pie fa-spin fa-xl" style="color:white; font-size: 60px;"></i>                  
-                 <ul>
-                    <li><a href="#">Market</a></li>
-                    <li><a href="#">Features</a></li>
-                    <li><a href="#">White Papers</a></li>
-                    <li><a href="#">About</a></li>
+      <div class="top-actions">
+        <button id="refreshBtn" class="ghost-btn" type="button">Refresh</button>
+        <button id="langBtn" class="lang-btn" type="button">EN</button>
+      </div>
+    </header>
 
-                </ul>
-
-                <a href="#" class="btn">EN</a>
-            </nav>
-
-            <div class="content">
-                <h1>BUY & <br>SELL <span>Crypto</span> </h1>
-                <p>Worlds's Biggest Cryptocurrency exchange available on web<br> as well as mobile phone.</p>
-                <a href="#" class="btn">Explore More</a>
+    <main>
+      <section id="market" class="page-section active-section">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Live crypto intelligence</p>
+            <h1>BUY &<br />SELL <span>Crypto</span></h1>
+            <p class="hero-text">Track market prices, trends, sentiment, portfolio risk and trading ideas in one dashboard.</p>
+            <div class="hero-buttons">
+              <button class="primary-btn" data-scroll="marketTable">Explore Market</button>
+              <button class="secondary-btn" data-section="features">Open Tools</button>
             </div>
+          </div>
 
-            <div class="coin-list">
-                <div class="coin">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="4.25em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#f2a807}</style><path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zm-141.651-35.33c4.937-32.999-20.191-50.739-54.55-62.573l11.146-44.702-27.213-6.781-10.851 43.524c-7.154-1.783-14.502-3.464-21.803-5.13l10.929-43.81-27.198-6.781-11.153 44.686c-5.922-1.349-11.735-2.682-17.377-4.084l.031-.14-37.53-9.37-7.239 29.062s20.191 4.627 19.765 4.913c11.022 2.751 13.014 10.044 12.68 15.825l-12.696 50.925c.76.194 1.744.473 2.829.907-.907-.225-1.876-.473-2.876-.713l-17.796 71.338c-1.349 3.348-4.767 8.37-12.471 6.464.271.395-19.78-4.937-19.78-4.937l-13.51 31.147 35.414 8.827c6.588 1.651 13.045 3.379 19.4 5.006l-11.262 45.213 27.182 6.781 11.153-44.733a1038.209 1038.209 0 0 0 21.687 5.627l-11.115 44.523 27.213 6.781 11.262-45.128c46.404 8.781 81.299 5.239 95.986-36.727 11.836-33.79-.589-53.281-25.004-65.991 17.78-4.098 31.174-15.792 34.747-39.949zm-62.177 87.179c-8.41 33.79-65.308 15.523-83.755 10.943l14.944-59.899c18.446 4.603 77.6 13.717 68.811 48.956zm8.417-87.667c-7.673 30.736-55.031 15.12-70.393 11.292l13.548-54.327c15.363 3.828 64.836 10.973 56.845 43.035z"/></svg>                          <div>
-                        <h3>&nbsp;&nbsp;&nbsp;$ <span id="bitcoin"></span></h3>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;Bitcoin</p>
-                    </div>
-                </div>
-
-                <div class="coin">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="4.25em" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#f2a807}</style><path d="M311.9 260.8L160 353.6 8 260.8 160 0l151.9 260.8zM160 383.4L8 290.6 160 512l152-221.4-152 92.8z"/></svg>                    <div>
-                        <h3>&nbsp;&nbsp;&nbsp;$<span id="ethereum"></span></h3>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;Ethereum</p>
-                    </div>
-                </div>
-
-                <div class="coin">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="4.25em" viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#f9a006}</style><path d="M0 96C0 60.7 28.7 32 64 32h96c123.7 0 224 100.3 224 224s-100.3 224-224 224H64c-35.3 0-64-28.7-64-64V96zm160 0H64V416h96c88.4 0 160-71.6 160-160s-71.6-160-160-160z"/></svg>                    <div>
-                        <h3>&nbsp;&nbsp;&nbsp;$<span id="dogecoin"></span></h3>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;Dogecoin</p>
-                    </div>
-                </div>
+          <div class="hero-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Market pulse</p>
+                <h2 id="marketPulse">Loading...</h2>
+              </div>
+              <span id="lastUpdated" class="status-pill">syncing</span>
             </div>
+            <div id="signalList" class="signal-list"></div>
+          </div>
         </div>
 
-        <script src="script.js"></script>
-    </body>
+        <div id="coinCards" class="coin-list"></div>
+
+        <section class="dashboard-grid">
+          <article class="card wide" id="marketTable">
+            <div class="card-title-row">
+              <div>
+                <h2>Market Watchlist</h2>
+                <p>Live prices, 24h change, volume and market cap.</p>
+              </div>
+              <input id="coinSearch" type="search" placeholder="Search coin..." />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Coin</th>
+                    <th>Price</th>
+                    <th>24h</th>
+                    <th>Market Cap</th>
+                    <th>Volume</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="marketRows"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="card">
+            <h2>Converter</h2>
+            <p>Convert crypto to USD using live prices.</p>
+            <div class="form-stack">
+              <input id="convertAmount" type="number" min="0" value="1" />
+              <select id="convertCoin"></select>
+              <div id="convertResult" class="result-box">$0.00</div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h2>Trend Radar</h2>
+            <p>Trending assets and quick opportunities.</p>
+            <div id="trendList" class="mini-list"></div>
+          </article>
+        </section>
+      </section>
+
+      <section id="features" class="page-section">
+        <div class="section-heading">
+          <p class="eyebrow">Interactive tools</p>
+          <h1>Crypto command center</h1>
+          <p>Every tool works in-browser and keeps data on your device.</p>
+        </div>
+
+        <section class="dashboard-grid">
+          <article class="card">
+            <h2>Portfolio Simulator</h2>
+            <p>Add holdings and estimate profit/loss instantly.</p>
+            <div class="form-stack">
+              <select id="portfolioCoin"></select>
+              <input id="portfolioQty" type="number" min="0" step="0.0001" placeholder="Quantity" />
+              <input id="portfolioCost" type="number" min="0" step="0.01" placeholder="Average buy price USD" />
+              <button id="addHolding" class="primary-btn" type="button">Add Holding</button>
+            </div>
+            <div id="portfolioSummary" class="result-box">Portfolio empty</div>
+            <div id="portfolioList" class="mini-list"></div>
+          </article>
+
+          <article class="card">
+            <h2>Price Alerts</h2>
+            <p>Create simple local alerts based on live price refresh.</p>
+            <div class="form-stack">
+              <select id="alertCoin"></select>
+              <select id="alertDirection">
+                <option value="above">Above</option>
+                <option value="below">Below</option>
+              </select>
+              <input id="alertPrice" type="number" min="0" step="0.01" placeholder="Target price USD" />
+              <button id="addAlert" class="secondary-btn" type="button">Save Alert</button>
+            </div>
+            <div id="alertList" class="mini-list"></div>
+          </article>
+
+          <article class="card wide">
+            <div class="card-title-row">
+              <div>
+                <h2>Trading Panel</h2>
+                <p>Prepare swaps and estimate output. Private keys stay server-side only.</p>
+              </div>
+              <button id="connectWallet" class="primary-btn" type="button">Connect Wallet</button>
+            </div>
+            <div class="trade-grid">
+              <div class="form-stack">
+                <label>From</label>
+                <select id="tradeFrom"></select>
+                <input id="tradeAmount" type="number" min="0" value="100" />
+              </div>
+              <div class="form-stack">
+                <label>To</label>
+                <select id="tradeTo"></select>
+                <div id="tradeEstimate" class="result-box">Estimate: --</div>
+              </div>
+              <div class="form-stack">
+                <label>Network</label>
+                <div id="networkInfo" class="result-box">Ready</div>
+                <button id="mockTrade" class="secondary-btn" type="button">Create Trade Plan</button>
+              </div>
+            </div>
+            <div id="tradeHistory" class="mini-list"></div>
+          </article>
+        </section>
+      </section>
+
+      <section id="whitepapers" class="page-section">
+        <div class="section-heading">
+          <p class="eyebrow">Research center</p>
+          <h1>White Papers & intelligence</h1>
+          <p>Research, explainers, news and risk notes for crypto decisions.</p>
+        </div>
+        <section class="dashboard-grid">
+          <article class="card wide">
+            <div class="card-title-row">
+              <div>
+                <h2>Market News</h2>
+                <p>Auto-fallback feed. If one provider fails, the dashboard keeps working.</p>
+              </div>
+              <button id="loadNews" class="ghost-btn" type="button">Load News</button>
+            </div>
+            <div id="newsList" class="news-list"></div>
+          </article>
+
+          <article class="card">
+            <h2>Risk Scanner</h2>
+            <p>Quick risk score based on volatility, liquidity and market cap.</p>
+            <select id="riskCoin"></select>
+            <div id="riskResult" class="risk-meter">Choose a coin</div>
+          </article>
+
+          <article class="card">
+            <h2>Learning Hub</h2>
+            <div class="mini-list">
+              <button class="text-card" data-learn="marketcap">What is market cap?</button>
+              <button class="text-card" data-learn="volume">Why volume matters?</button>
+              <button class="text-card" data-learn="risk">How to control crypto risk?</button>
+              <button class="text-card" data-learn="dex">What is a DEX?</button>
+            </div>
+            <div id="learnOutput" class="result-box">Click a topic to read.</div>
+          </article>
+        </section>
+      </section>
+
+      <section id="about" class="page-section">
+        <div class="section-heading">
+          <p class="eyebrow">Buildathon ready</p>
+          <h1>About this project</h1>
+        </div>
+        <section class="dashboard-grid">
+          <article class="card wide">
+            <h2>One-person on-chain finance dashboard</h2>
+            <p>This app combines live prices, research, signals, watchlists, portfolio simulation, alerts, and a trading plan interface into a single crypto workflow.</p>
+            <div class="feature-list">
+              <span>Live market data</span>
+              <span>Search & watchlist</span>
+              <span>Converter</span>
+              <span>Portfolio simulator</span>
+              <span>Alerts</span>
+              <span>Risk scanner</span>
+              <span>Trading panel</span>
+              <span>News feed</span>
+            </div>
+          </article>
+          <article class="card">
+            <h2>Submission Checklist</h2>
+            <div class="mini-list">
+              <div>✅ Demo works without exposing keys</div>
+              <div>✅ Menus are interactive</div>
+              <div>✅ API fallback included</div>
+              <div>✅ Mobile responsive</div>
+            </div>
+          </article>
+
+          <article class="card wide official-links-card">
+            <div class="card-title-row">
+              <div>
+                <p class="eyebrow">Official ecosystem links</p>
+                <h2>SoSoValue · SoDEX · SSI</h2>
+                <p>All links below open official pages in a new tab. Use this section during demo/submission to prove the project is connected to the correct ecosystem.</p>
+              </div>
+              <button class="ghost-btn" id="copyOfficialLinks" type="button">Copy Links</button>
+            </div>
+
+            <div class="official-grid">
+              <div class="official-card">
+                <div class="official-badge">DATA</div>
+                <h3>SoSoValue</h3>
+                <p>AI-powered crypto market intelligence, live prices, ETF data, on-chain dashboards, research and news feeds.</p>
+                <div class="official-actions">
+                  <a href="https://m.sosovalue.com/" target="_blank" rel="noopener">Official Website</a>
+                  <a href="https://m.sosovalue.com/developer" target="_blank" rel="noopener">Developer / API</a>
+                  <a href="https://m.sosovalue.com/research/research" target="_blank" rel="noopener">Research Feed</a>
+                  <a href="https://m.sosovalue.com/assets/cryptoindex" target="_blank" rel="noopener">Crypto Indexes</a>
+                </div>
+              </div>
+
+              <div class="official-card">
+                <div class="official-badge">DEX</div>
+                <h3>SoDEX</h3>
+                <p>Decentralized exchange on ValueChain with on-chain order-book infrastructure for spot, RWA, perpetuals and futures.</p>
+                <div class="official-actions">
+                  <a href="https://sodex.com/" target="_blank" rel="noopener">Official Website</a>
+                  <a href="https://sodex.com/documentation" target="_blank" rel="noopener">Whitepaper / Docs</a>
+                  <a href="https://sodex.com/documentation/api/api" target="_blank" rel="noopener">API Documentation</a>
+                  <a href="https://testnet.sodex.com/explorer" target="_blank" rel="noopener">ValueChain Explorer</a>
+                </div>
+              </div>
+
+              <div class="official-card">
+                <div class="official-badge">INDEX</div>
+                <h3>SSI — SoSoValue Indexes</h3>
+                <p>On-chain spot crypto index protocol for diversified passive crypto exposure through wrapped index tokens.</p>
+                <div class="official-actions">
+                  <a href="https://ssi.sosovalue.com/" target="_blank" rel="noopener">Official Website</a>
+                  <a href="https://sosovalue.gitbook.io/sosovalue-indices" target="_blank" rel="noopener">GitBook Docs</a>
+                  <a href="https://ssi.sosovalue.com/buy" target="_blank" rel="noopener">Buy / Stake</a>
+                  <a href="https://ssi.sosovalue.com/soso-token" target="_blank" rel="noopener">$SOSO Token</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="network-box">
+              <h3>ValueChain Testnet Quick Info</h3>
+              <div class="network-grid">
+                <div><span>Network</span><strong>ValueChain Testnet</strong></div>
+                <div><span>RPC URL</span><strong>https://testnet.valuechain.xyz/</strong></div>
+                <div><span>Chain ID</span><strong>13855</strong></div>
+                <div><span>Symbol</span><strong>SOSO</strong></div>
+                <div><span>Explorer</span><strong>https://testnet.sodex.com/explorer</strong></div>
+                <div><span>vUSDC</span><strong>0x3fF1743c2Cb5C9c9ED23d8CF62dD7aFABD4eE05</strong></div>
+              </div>
+            </div>
+          </article>
+        </section>
+      </section>
+    </main>
+  </div>
+
+
+  <aside class="wave-music-player" id="waveMusicPlayer" aria-label="SoSoValue Wave 2 music player">
+    <div class="music-topline">
+      <button id="musicCollapse" class="music-icon-btn" type="button" aria-label="Minimize player">▾</button>
+      <div class="music-title-box">
+        <span class="music-kicker">Now Playing</span>
+        <strong id="musicTrackName">SoSoValue Wave 2</strong>
+      </div>
+    </div>
+
+    <div class="music-visual">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <audio id="waveAudio" preload="metadata">
+      <source src="audio/SoSoValue Wave 2.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="music-controls">
+      <button id="musicPlay" class="music-main-btn" type="button">▶</button>
+      <div class="music-time-box">
+        <input id="musicSeek" class="music-seek" type="range" min="0" max="100" value="0" />
+        <div class="music-time-row">
+          <span id="musicCurrent">0:00</span>
+          <span id="musicDuration">0:00</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="music-actions">
+      <label class="music-file-btn">
+        Open MP3
+        <input id="musicFile" type="file" accept="audio/mpeg,audio/mp3,audio/*" hidden />
+      </label>
+      <button id="musicDefault" class="music-small-btn" type="button">Default</button>
+      <button id="musicMute" class="music-small-btn" type="button">Mute</button>
+    </div>
+
+    <div class="music-volume-row">
+      <span>Vol</span>
+      <input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.75" />
+    </div>
+  </aside>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
 </html>
