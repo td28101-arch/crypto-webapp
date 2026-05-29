@@ -1,7 +1,6 @@
 Put your MP3 files here for the built-in bottom music bar:
 
 - SoSoValue Wave 2.mp3
-- Market Signal.mp3
 - On-chain Night.mp3
 - Crypto Disco.mp3
 
