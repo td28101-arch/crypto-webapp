@@ -301,26 +301,31 @@
 
 
   <aside class="wave-music-player" id="waveMusicPlayer" aria-label="SoSoValue Wave 2 music player">
-    <div class="music-topline">
-      <button id="musicCollapse" class="music-icon-btn" type="button" aria-label="Minimize player">▾</button>
+    <div class="music-brand-row">
+      <button id="musicCollapse" class="music-icon-btn" type="button" aria-label="Minimize player">🎵</button>
       <div class="music-title-box">
-        <span class="music-kicker">Now Playing</span>
+        <span class="music-kicker">Demo Soundtrack</span>
         <strong id="musicTrackName">SoSoValue Wave 2</strong>
+        <small id="musicStatusText">Built for Wave 2 demo experience</small>
       </div>
     </div>
 
-    <div class="music-visual">
-      <span></span><span></span><span></span><span></span><span></span>
+    <div class="music-visual" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
 
     <audio id="waveAudio" preload="metadata">
       <source src="audio/SoSoValue Wave 2.mp3" type="audio/mpeg" />
     </audio>
 
-    <div class="music-controls">
-      <button id="musicPlay" class="music-main-btn" type="button">▶</button>
+    <div class="music-center-row">
+      <div class="music-transport">
+        <button id="musicPrev" class="music-round-btn" type="button" aria-label="Previous track">⏮</button>
+        <button id="musicPlay" class="music-main-btn" type="button" aria-label="Play or pause">▶</button>
+        <button id="musicNext" class="music-round-btn" type="button" aria-label="Next track">⏭</button>
+      </div>
       <div class="music-time-box">
-        <input id="musicSeek" class="music-seek" type="range" min="0" max="100" value="0" />
+        <input id="musicSeek" class="music-seek" type="range" min="0" max="100" value="0" aria-label="Seek music" />
         <div class="music-time-row">
           <span id="musicCurrent">0:00</span>
           <span id="musicDuration">0:00</span>
@@ -328,20 +333,32 @@
       </div>
     </div>
 
-    <div class="music-actions">
+    <div class="music-right-row">
+      <select id="musicPlaylist" class="music-playlist" aria-label="Choose soundtrack">
+        <option value="audio/SoSoValue Wave 2.mp3">SoSoValue Wave 2</option>
+        <option value="audio/Market Signal.mp3">Market Signal</option>
+        <option value="audio/On-chain Night.mp3">On-chain Night</option>
+        <option value="audio/Crypto Disco.mp3">Crypto Disco</option>
+      </select>
       <label class="music-file-btn">
         Open MP3
         <input id="musicFile" type="file" accept="audio/mpeg,audio/mp3,audio/*" hidden />
       </label>
       <button id="musicDefault" class="music-small-btn" type="button">Default</button>
+      <button id="musicRepeat" class="music-small-btn" type="button">Repeat</button>
       <button id="musicMute" class="music-small-btn" type="button">Mute</button>
-    </div>
-
-    <div class="music-volume-row">
-      <span>Vol</span>
-      <input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.75" />
+      <button id="demoModeBtn" class="music-demo-btn" type="button">Demo Mode</button>
+      <div class="music-volume-row">
+        <span>Vol</span>
+        <input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.75" aria-label="Volume" />
+      </div>
     </div>
   </aside>
+
+  <div id="demoOverlay" class="demo-overlay" aria-live="polite">
+    <span>Wave 2 Demo Mode</span>
+    <strong id="demoOverlayText">Market intelligence begins now</strong>
+  </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>

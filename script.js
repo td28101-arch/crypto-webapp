@@ -236,6 +236,8 @@ function initWaveMusicPlayer() {
   const player = $("waveMusicPlayer");
   const audio = $("waveAudio");
   const playBtn = $("musicPlay");
+  const prevBtn = $("musicPrev");
+  const nextBtn = $("musicNext");
   const seek = $("musicSeek");
   const current = $("musicCurrent");
   const duration = $("musicDuration");
@@ -243,19 +245,59 @@ function initWaveMusicPlayer() {
   const fileInput = $("musicFile");
   const defaultBtn = $("musicDefault");
   const muteBtn = $("musicMute");
+  const repeatBtn = $("musicRepeat");
   const collapseBtn = $("musicCollapse");
   const trackName = $("musicTrackName");
+  const statusText = $("musicStatusText");
+  const playlist = $("musicPlaylist");
+  const demoBtn = $("demoModeBtn");
+  const demoOverlay = $("demoOverlay");
+  const demoOverlayText = $("demoOverlayText");
   if (!player || !audio) return;
 
-  const defaultTrack = "audio/SoSoValue Wave 2.mp3";
-  audio.volume = Number(localStorage.getItem("waveMusicVolume") || 0.75);
-  volume.value = audio.volume;
+  const tracks = [
+    { title: "SoSoValue Wave 2", src: "audio/SoSoValue Wave 2.mp3", note: "Built for Wave 2 demo experience" },
+    { title: "Market Signal", src: "audio/Market Signal.mp3", note: "Fast trading section energy" },
+    { title: "On-chain Night", src: "audio/On-chain Night.mp3", note: "ValueChain cyber xianxia mood" },
+    { title: "Crypto Disco", src: "audio/Crypto Disco.mp3", note: "90s disco crypto anthem" }
+  ];
+  let trackIndex = Math.max(0, tracks.findIndex(t => t.src === localStorage.getItem("waveMusicTrack")));
+  let repeat = localStorage.getItem("waveMusicRepeat") === "true";
+  let demoTimer = null;
+  let overlayTimer = null;
+  const demoSteps = [
+    { section: "market", text: "Market intelligence: live prices, signals and watchlist" },
+    { section: "features", text: "Tool layer: converter, risk scanner, portfolio and trade plan" },
+    { section: "whitepapers", text: "Research layer: explain the logic behind the crypto workflow" },
+    { section: "about", text: "Official ecosystem links: SoSoValue, SoDEX and SSI" }
+  ];
+  let demoStep = 0;
 
   const fmt = (seconds) => {
     if (!Number.isFinite(seconds)) return "0:00";
     const m = Math.floor(seconds / 60);
-    const s = Math.floor(seconds % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
+    const sec = Math.floor(seconds % 60).toString().padStart(2, "0");
+    return `${m}:${sec}`;
+  };
+
+  const showDemoOverlay = (text) => {
+    if (!demoOverlay || !demoOverlayText) return;
+    demoOverlayText.textContent = text;
+    demoOverlay.classList.add("show");
+    clearTimeout(overlayTimer);
+    overlayTimer = setTimeout(() => demoOverlay.classList.remove("show"), 2600);
+  };
+
+  const setTrack = (index, autoPlay = false) => {
+    trackIndex = (index + tracks.length) % tracks.length;
+    const track = tracks[trackIndex];
+    audio.src = track.src;
+    trackName.textContent = track.title;
+    if (statusText) statusText.textContent = track.note;
+    if (playlist) playlist.value = track.src;
+    localStorage.setItem("waveMusicTrack", track.src);
+    audio.load();
+    if (autoPlay) tryPlay();
   };
 
   const setPlayingUI = () => {
@@ -269,11 +311,61 @@ function initWaveMusicPlayer() {
       await audio.play();
       setPlayingUI();
     } catch (_) {
-      toast("Choose MP3 or click play again");
+      if (statusText) statusText.textContent = "Default track not found. Open an MP3 file or click again.";
+      toast("Open MP3 if the default track is not uploaded");
     }
   };
 
+  const activateSection = (sectionId) => {
+    const link = document.querySelector(`[data-section="${sectionId}"]`);
+    if (link) link.click();
+    const section = $(sectionId);
+    if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const stopDemo = () => {
+    clearInterval(demoTimer);
+    demoTimer = null;
+    if (demoBtn) {
+      demoBtn.classList.remove("active");
+      demoBtn.textContent = "Demo Mode";
+    }
+    if (demoOverlay) demoOverlay.classList.remove("show");
+    toast("Demo Mode stopped");
+  };
+
+  const startDemo = () => {
+    player.classList.remove("collapsed");
+    if (audio.paused) tryPlay();
+    if (demoBtn) {
+      demoBtn.classList.add("active");
+      demoBtn.textContent = "Stop Demo";
+    }
+    demoStep = 0;
+    const runStep = () => {
+      const step = demoSteps[demoStep % demoSteps.length];
+      activateSection(step.section);
+      showDemoOverlay(step.text);
+      toast(step.text);
+      demoStep += 1;
+    };
+    runStep();
+    clearInterval(demoTimer);
+    demoTimer = setInterval(runStep, 5200);
+  };
+
+  audio.volume = Number(localStorage.getItem("waveMusicVolume") || 0.75);
+  if (volume) volume.value = audio.volume;
+  if (repeatBtn) repeatBtn.textContent = repeat ? "Repeat On" : "Repeat";
+  setTrack(trackIndex, false);
+
   playBtn.addEventListener("click", () => audio.paused ? tryPlay() : audio.pause());
+  prevBtn?.addEventListener("click", () => setTrack(trackIndex - 1, true));
+  nextBtn?.addEventListener("click", () => setTrack(trackIndex + 1, true));
+  playlist?.addEventListener("change", () => {
+    const index = tracks.findIndex(t => t.src === playlist.value);
+    setTrack(index >= 0 ? index : 0, true);
+  });
   audio.addEventListener("play", setPlayingUI);
   audio.addEventListener("pause", setPlayingUI);
   audio.addEventListener("loadedmetadata", () => {
@@ -283,40 +375,47 @@ function initWaveMusicPlayer() {
     current.textContent = fmt(audio.currentTime);
     seek.value = audio.duration ? String((audio.currentTime / audio.duration) * 100) : "0";
   });
+  audio.addEventListener("ended", () => repeat ? setTrack(trackIndex, true) : setTrack(trackIndex + 1, true));
   seek.addEventListener("input", () => {
     if (audio.duration) audio.currentTime = (Number(seek.value) / 100) * audio.duration;
   });
-  volume.addEventListener("input", () => {
+  volume?.addEventListener("input", () => {
     audio.volume = Number(volume.value);
     audio.muted = false;
     muteBtn.textContent = "Mute";
     localStorage.setItem("waveMusicVolume", String(audio.volume));
   });
-  muteBtn.addEventListener("click", () => {
+  muteBtn?.addEventListener("click", () => {
     audio.muted = !audio.muted;
     muteBtn.textContent = audio.muted ? "Unmute" : "Mute";
   });
-  fileInput.addEventListener("change", () => {
+  repeatBtn?.addEventListener("click", () => {
+    repeat = !repeat;
+    localStorage.setItem("waveMusicRepeat", String(repeat));
+    repeatBtn.textContent = repeat ? "Repeat On" : "Repeat";
+    toast(repeat ? "Repeat enabled" : "Repeat disabled");
+  });
+  fileInput?.addEventListener("change", () => {
     const file = fileInput.files?.[0];
     if (!file) return;
     audio.src = URL.createObjectURL(file);
-    trackName.textContent = file.name.replace(/\.mp3$/i, "");
+    trackName.textContent = file.name.replace(/\.(mp3|wav|m4a|aac|ogg)$/i, "");
+    if (statusText) statusText.textContent = "Local MP3 loaded from your computer";
     audio.load();
-    toast("MP3 loaded from your computer");
+    toast("MP3 loaded");
     tryPlay();
   });
-  defaultBtn.addEventListener("click", () => {
-    audio.src = defaultTrack;
-    trackName.textContent = "SoSoValue Wave 2";
-    audio.load();
-    toast("Default track selected");
+  defaultBtn?.addEventListener("click", () => setTrack(0, true));
+  collapseBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    player.classList.toggle("collapsed");
   });
-  collapseBtn.addEventListener("click", () => player.classList.toggle("collapsed"));
   player.addEventListener("click", (e) => {
     if (player.classList.contains("collapsed") && e.target === player) player.classList.remove("collapsed");
   });
+  demoBtn?.addEventListener("click", () => demoTimer ? stopDemo() : startDemo());
   audio.addEventListener("error", () => {
-    trackName.textContent = "Open SoSoValue Wave 2 MP3";
+    if (statusText) statusText.textContent = "Default track missing. Use Open MP3 or add files in /audio.";
   });
 }
 
