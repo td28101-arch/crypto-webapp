@@ -1,7 +1,5 @@
 # Cryptocurrency Web-App
 
-Repository: https://github.com/td28101-arch
-
 Welcome to the Cryptocurrency Web-App repository! This project is a web application designed to provide users with real-time cryptocurrency prices and information.
 
 ## Overview
