@@ -8,7 +8,8 @@
 .container{
     width: 100%;
     height: 100vh;
-    background-image: url(/Images/Dollar.jpg);
+    background-image: url("./Images/Dollar.jpg");
+    background-color: #000;
     background-position: center;
     background-size: cover;
     padding: 0.7%;
