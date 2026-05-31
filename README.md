@@ -1,4 +1,4 @@
-# Crypto Wave Dashboard
+# crypto-webapp
 
 Interactive crypto dashboard for a buildathon/demo submission.
 
